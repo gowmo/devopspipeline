@@ -22,7 +22,7 @@ resource "aws_instance" "default" {
   instance_type          = var.instance_type
 
   tags = {
-    Name = "terraform-gowtham-from-pipe"
+    Name = "terraform-gowtham-test-remote-exec"
   }
 }
 
@@ -45,3 +45,8 @@ resource "aws_security_group" "default" {
   }
 
 }
+
+# Create ansible remote provisioner
+  provisioner "remote-exec" {
+    inline = ["sudo apt-get -qq install python -y"]
+  }
