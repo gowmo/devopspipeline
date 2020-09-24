@@ -34,7 +34,7 @@ resource "aws_instance" "default" {
       type        = "ssh"
       user        = "ec2-user"
       private_key = "${var.key_name}"
-      host        = "${self.public_ip}
+      host        = "${self.public_ip}"
     }
   }
 }
