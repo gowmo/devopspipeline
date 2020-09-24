@@ -33,7 +33,7 @@ resource "aws_instance" "default" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = "${var.key_name}"
+      private_key = "${file(/home/moksgo/Downloads/terraform.pem)}"
       host        = "${self.public_ip}"
     }
   }
