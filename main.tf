@@ -24,6 +24,11 @@ resource "aws_instance" "default" {
   tags = {
     Name = "terraform-gowtham-test-remote-exec"
   }
+
+# Ansible requires Python to be installed on the remote machine as well as the local machine.
+  provisioner "remote-exec" {
+    inline = ["sudo apt-get -qq install python -y"]
+  }
 }
 
 # Create Security Group for EC2
