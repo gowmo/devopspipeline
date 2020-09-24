@@ -27,7 +27,14 @@ resource "aws_instance" "default" {
 
        # Ansible requires Python to be installed on the remote machine as well as the local machine
   provisioner "remote-exec" {
-    inline = ["sudo apt-get -qq install python -y"]
+    # Install Python for Ansible
+    inline = ["sudo dnf -y install python libselinux-python"]
+
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = "${var.key_name}"
+    }
   }
 }
 
