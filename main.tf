@@ -22,7 +22,7 @@ resource "aws_instance" "default" {
   instance_type          = var.instance_type
 
   tags = {
-    Name = "terraform-gowtham-test-remote-exec"
+    Name = "terraform-gowtham-test1"
   }
 
        # Ansible requires Python to be installed on the remote machine as well as the local machine
@@ -34,6 +34,7 @@ resource "aws_instance" "default" {
       type        = "ssh"
       user        = "ec2-user"
       private_key = "${var.key_name}"
+      host        = "${self.public_ip}
     }
   }
 }
