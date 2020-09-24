@@ -25,7 +25,7 @@ resource "aws_instance" "default" {
     Name = "terraform-gowtham-test-remote-exec"
   }
 
-# Ansible requires Python to be installed on the remote machine as well as the local machine.
+       # Ansible requires Python to be installed on the remote machine as well as the local machine
   provisioner "remote-exec" {
     inline = ["sudo apt-get -qq install python -y"]
   }
@@ -50,8 +50,3 @@ resource "aws_security_group" "default" {
   }
 
 }
-
-# Create ansible remote provisioner
-  provisioner "remote-exec" {
-    inline = ["sudo apt-get -qq install python -y"]
-  }
