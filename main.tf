@@ -32,7 +32,7 @@ resource "aws_instance" "default" {
 
     connection {
       type        = "ssh"
-      user        = "ec2-user"
+      user        = "bitnami"
       private_key = "${file(var.key_path)}"
       host        = "${self.public_ip}"
     }
