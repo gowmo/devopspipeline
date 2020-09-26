@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+  - action: ping
+  
+  - name: update apt-get cache.
+    apt: update_cache=yes force_apt_get=yes
+
+...
