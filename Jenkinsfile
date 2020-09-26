@@ -9,6 +9,19 @@ try {
     }
   }
 
+
+  stage ('pre-pare'){
+      node { 
+        withCredentials ([
+          sshUserPrivateKey(
+            credentialsId: 'bitnamiAWSinstance',
+             keyFileVariable: 'SSH_KEY')])
+                 {
+                    sh 'cp "$SSH_KEY" ./terraform.pem'
+                 }
+      }
+      
+    }
   // Run terraform init
   stage('init') {
     node {
@@ -42,19 +55,7 @@ try {
   }
 
   if (env.BRANCH_NAME == 'master') {
-    stage ('pre-apply'){
-      node { 
-        withCredentials ([
-          sshUserPrivateKey(
-            credentialsId: 'bitnamiAWSinstance',
-             keyFileVariable: 'SSH_KEY')])
-                 {
-                    sh 'cp "$SSH_KEY" ./terraform.pem'
-                    sh 'terraform plan -out tfplan'
-                 }
-      }
-      
-    }
+
     // Run terraform apply
     stage('apply') {
       node {
