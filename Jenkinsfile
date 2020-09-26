@@ -79,7 +79,7 @@ try {
 
      stage('Execute Ansible') {
         node{
-          ansiblePlaybook become: true, credentialsId: 'bitnamiAWSinstance', disableHostKeyChecking: true, installation: 'ansible', inventory: 'myhost', playbook: 'playbook.yml'
+         ansiblePlaybook becomeUser: 'bitnami', credentialsId: 'bitnamiAWSinstance', installation: 'ansible', inventory: 'myhost', playbook: 'playbook.yml'
         }
 
      }
