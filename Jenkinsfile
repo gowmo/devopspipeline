@@ -17,7 +17,7 @@ try {
             credentialsId: 'bitnamiAWSinstance',
              keyFileVariable: 'SSH_KEY')])
                  {
-                    cp "$SSH_KEY" ./terraform.pem
+                    sh 'cp "$SSH_KEY" ./terraform.pem'
                  }
       }
       
