@@ -14,7 +14,7 @@ try {
       node { 
         withCredentials ([
           sshUserPrivateKey(
-            credentialsId: 'bitnamiAWSinstance',
+            credentialsId: credentialsId,
              keyFileVariable: 'SSH_KEY')])
                  {
                     sh 'cp "$SSH_KEY" ./terraform.pem'
