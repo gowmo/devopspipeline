@@ -22,7 +22,7 @@ resource "aws_instance" "default" {
   instance_type          = var.instance_type
 
   tags = {
-    Name = "terraform-jenkins-ansible"
+    Name = "terraform-ansible-jenkins"
   }
 
        # Ansible requires Python to be installed on the remote machine as well as the local machine
