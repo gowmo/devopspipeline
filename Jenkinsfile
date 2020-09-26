@@ -17,8 +17,7 @@ try {
             credentialsId: 'bitnamiAWSinstance',
              keyFileVariable: 'SSH_KEY')])
                  {
-                    sh 'cp "$SSH_KEY" ./terraform.pem'
-                    sleep 60s
+                    'cp "$SSH_KEY" ./terraform.pem'
                  }
       }
       
@@ -98,12 +97,6 @@ try {
 
      }
 
-     stage('Execute Ansible') {
-        node{
-          cleanWs()
-        }
-
-     }
   currentBuild.result = 'SUCCESS'
 }
 catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException flowError) {
