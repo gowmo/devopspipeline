@@ -8,7 +8,7 @@ variable "key_name" {
 }
 
 variable "key_path" {
-  default = "/home/moksgo/Downloads/terraform.pem"
+  default = "./terraform.pem"
 }
 
 variable "instance_type" {

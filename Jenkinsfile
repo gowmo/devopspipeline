@@ -42,7 +42,19 @@ try {
   }
 
   if (env.BRANCH_NAME == 'master') {
-
+    stage ('pre-apply'){
+      node { 
+        withCredentials ([
+          sshUserPrivateKey(
+            credentialsId: 'bitnamiAWSinstance',
+             keyFileVariable: 'SSH_KEY')])
+                 {
+                    sh 'cp "$SSH_KEY" ./terraform.pem'
+                    sh 'terraform plan -out tfplan'
+                 }
+      }
+      
+    }
     // Run terraform apply
     stage('apply') {
       node {
@@ -75,6 +87,14 @@ try {
       }
     }
   }
+
+
+     stage('Execute Ansible') {
+        node{
+          ansiblePlaybook become: true, credentialsId: 'bitnamiAWSinstance', disableHostKeyChecking: true, installation: 'ansible', inventory: 'myhost', playbook: 'playbook.yml'
+        }
+
+     }
   currentBuild.result = 'SUCCESS'
 }
 catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException flowError) {
