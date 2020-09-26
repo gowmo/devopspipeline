@@ -12,13 +12,15 @@ try {
 
   stage ('pre-pare'){
       node { 
-        withCredentials ([
-          sshUserPrivateKey(
-            credentialsId: credentialsId,
-             keyFileVariable: 'SSH_KEY')])
-                 {
-                    sh 'cp "$SSH_KEY" ./terraform.pem'
-                 }
+        withCredentials([[
+        $class: 'SSHUserPrivateKey',
+        credentialsId: 'bitnamiAWSinstance',
+        keyFileVariable: 'KEY_PAIR'
+      ]])
+         {
+             sh 'cp "$KEY_PAIR" ./terraform.pem'
+         }
+
       }
       
     }
