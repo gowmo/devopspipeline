@@ -18,6 +18,7 @@ try {
              keyFileVariable: 'SSH_KEY')])
                  {
                     sh 'cp "$SSH_KEY" ./terraform.pem'
+                    sh sleep 60s
                  }
       }
       
@@ -93,6 +94,13 @@ try {
      stage('Execute Ansible') {
         node{
           ansiblePlaybook become: true, credentialsId: 'bitnamiAWSinstance', disableHostKeyChecking: true, installation: 'ansible', inventory: 'myhost', playbook: 'playbook.yml'
+        }
+
+     }
+
+     stage('Execute Ansible') {
+        node{
+          cleanWs()
         }
 
      }
