@@ -8,7 +8,7 @@ variable "key_name" {
 }
 
 variable "key_path" {
-  default = "./terraform.pem"
+  default = "files/terraform.pem"
 }
 
 variable "instance_type" {
