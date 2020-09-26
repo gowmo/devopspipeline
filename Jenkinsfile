@@ -18,7 +18,7 @@ try {
              keyFileVariable: 'SSH_KEY')])
                  {
                     sh 'cp "$SSH_KEY" ./terraform.pem'
-                    sh sleep 60s
+                    sleep 60s
                  }
       }
       
