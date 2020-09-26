@@ -9,19 +9,6 @@ try {
     }
   }
 
-
-  stage ('pre-pare'){
-      node { 
-        withCredentials([sshUserPrivateKey(
-    credentialsId: 'bitnamiAWSinstance',
-    keyFileVariable: 'KEY_PAIR')])
-         {
-             sh 'cp "$KEY_PAIR" files/terraform.pem'
-         }
-
-      }
-      
-    }
   // Run terraform init
   stage('init') {
     node {
