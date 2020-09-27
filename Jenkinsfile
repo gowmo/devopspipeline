@@ -83,6 +83,7 @@ try {
         ]]) {
           ansiColor('xterm') {
             sh 'terraform show'
+            sh 'sleep 120s'
           }
         }
       }
