@@ -79,7 +79,7 @@ try {
 
      stage('Execute Ansible') {
         node{
-         ansiblePlaybook becomeUser: 'ec2-user', credentialsId: 'bitnamiAWSinstance', installation: 'ansible', inventory: 'myhost', playbook: 'playbook.yml'
+         ansiblePlaybook credentialsId: 'bitnamiAWSinstance', installation: 'ansible', inventory: 'myhost', playbook: 'playbook.yml'
         }
 
      }
