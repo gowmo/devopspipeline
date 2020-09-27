@@ -22,26 +22,14 @@ resource "aws_instance" "default" {
   instance_type          = var.instance_type
 
   tags = {
-    Name = "terraform-ansible-jenkins"
-  }
-
-       # Ansible requires Python to be installed on the remote machine as well as the local machine
-  provisioner "remote-exec" {
-    # Install Python for Ansible
-    inline = ["sudo dnf -y install python libselinux-python"]
-
-    connection {
-      type        = "ssh"
-      user        = "bitnami"
-      private_key = "${file(var.key_path)}"
-      host        = "${self.public_ip}"
-    }
+    Name = "aws-packaged-pipeline"
   }
 }
 
+
 # Create Security Group for EC2
 resource "aws_security_group" "default" {
-  name = "terraform-default-sg"
+  name = "terraform-updated-sg"
 
   ingress {
     from_port   = 80
@@ -57,4 +45,31 @@ resource "aws_security_group" "default" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+   egress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+   egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+   egress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["::/0"]
+  }
+   egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["::/0"]
+  }
+
 }
+

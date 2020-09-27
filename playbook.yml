@@ -1,11 +1,25 @@
 ---
-- hosts: all
+- name: ansible-playbook install  
+  hosts: ec2
   become: yes
 
   tasks:
-  - action: ping
-  
-  - name: update apt-get cache.
-    apt: update_cache=yes force_apt_get=yes
+    - name : ping the server  
+      action: ping
 
+    - name: wget install
+      yum:  
+       name: wget
+       state: present
+       update_cache: true
+      become: true
+
+    - name: Install EPEL repo.
+      yum: name=epel-release state=present
+
+    - name: Install Node.js and npm.
+      yum: name=npm state=present enablerepo=epel
+
+    - name: Install apache httpd
+      yum: name=httpd state=present enablerepo=epel
 ...
