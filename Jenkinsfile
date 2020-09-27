@@ -9,6 +9,19 @@ try {
     }
   }
 
+  stage('pre-pare'){
+    node{
+      withCredentials ([
+          sshUserPrivateKey(
+            credentialsId: 'bitnamiAWSinstance',
+             keyFileVariable: 'SSH_KEY')])
+                 {
+                    sh 'cp "$SSH_KEY" files/terraform.pem'
+                 }
+    }
+
+  }
+
   // Run terraform init
   stage('init') {
     node {
@@ -79,7 +92,8 @@ try {
 
      stage('Execute Ansible') {
         node{
-         ansiblePlaybook credentialsId: 'awslinuxcredentials', installation: 'ansible', inventory: 'myhost', playbook: 'playbook.yml'
+          sh 'ansible-playbook playbook.yml -i myhost --private-key files/terraform.pem -u ec2-user'
+
         }
 
      }
