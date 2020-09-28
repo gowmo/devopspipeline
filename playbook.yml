@@ -53,6 +53,10 @@
     - name: Copy LICENSE to server.
       copy: "src=LICENSE dest={{ node_apps_location }}"  
 
+
+    - name: restrict the strict ssl
+      shell: "npm config set strict-ssl false" 
+
     - name: Install the node module dependencies
       shell: "npm install -g npm@latest" 
       args: 
