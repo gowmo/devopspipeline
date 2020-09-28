@@ -1,7 +1,12 @@
 ---
+
+
 - name: ansible-playbook install  
   hosts: ec2
   become: yes
+
+  vars:
+    node_apps_location: /usr/local/opt/node
 
   tasks:
     - name : ping the server  
@@ -17,9 +22,58 @@
     - name: Install EPEL repo.
       yum: name=epel-release state=present
 
+    - name: Install Node version manager nvm
+      command :  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+      become: true
+
     - name: Install Node.js and npm.
-      yum: name=npm state=present enablerepo=epel
+      command :  . ~/.nvm/nvm.sh
+
+    - name:  use nvm to install node
+      command :  nvm install node
+      become: true
+
+    - name:  restrict strict ssl
+      command: npm config set strict-ssl false
+      become: true 
+
+    - name: install pm2 to deploy the node application
+      command :  nvm install node
+      become: true
 
     - name: Install apache httpd
       yum: name=httpd state=present enablerepo=epel
+
+    - name: Copy public folder to server.
+      copy: "src=public dest={{ node_apps_location }}"
+
+    - name: Copy src folder to server.
+      copy: "src=src dest={{ node_apps_location }}"
+
+
+    - name: Copy package.json to server.
+      copy: "src=package.json dest={{ node_apps_location }}"
+
+
+    - name: Copy package-lock.json file to server.
+      copy: "src=package-lock.json dest={{ node_apps_location }}" 
+
+
+    - name: Copy yarn.lock file to server.
+      copy: "src=yarn.lock dest={{ node_apps_location }}"
+
+
+    - name: Copy readme.md to server.
+      copy: "src=README.md dest={{ node_apps_location }}"
+
+
+    - name: Copy LICENSE to server.
+      copy: "src=LICENSE dest={{ node_apps_location }}"   
+      
+    - name:  install node module dependencies
+      command: sudo npm install -g npm@latest
+      become: true 
+
+    - name: serve the app using pm2
+      command: pm2 serve --name "emoji-app" 
 ...
