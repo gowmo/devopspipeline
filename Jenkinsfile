@@ -93,7 +93,7 @@ try {
 
      stage('Execute Ansible') {
         node{
-          ansiblePlaybook becomeUser: 'ec2-user', credentialsId: 'bitnamiAWSinstance', installation: 'ansible', inventory: 'myhost', playbook: 'playbook.yml'
+          sh 'ansible-playbook playbook.yml -i myhost -u ec2-user --private-key files/terraform.pem'
 
         }
 
