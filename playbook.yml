@@ -1,7 +1,7 @@
 ---
 
 
-- name: ansible-playbook install  
+- name: ansible-playbook for amazon linux instance  
   hosts: ec2
   become: yes
 
@@ -20,28 +20,16 @@
       become: true
 
     - name: Install EPEL repo.
-      yum: name=epel-release state=present
-
-    - name: Install Node version manager nvm
-      command :  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-      become: true
+      yum: name=epel-release state=latest
 
     - name: Install Node.js and npm.
-      command :  . ~/.nvm/nvm.sh
+      yum: name=npm state=latest enablerepo=epel
 
-    - name:  use nvm to install node
-      command :  nvm install node
-      become: true
+    - name: Install pm2
+      shell: "wget -qO- https://getpm2.com/install.sh | bash"
+      become: ssh -i "terraform.pem" ec2-user@ec2-3-84-23-247.compute-1.amazonaws.com true
 
-    - name:  restrict strict ssl
-      command: npm config set strict-ssl false
-      become: true 
-
-    - name: install pm2 to deploy the node application
-      command :  nvm install node
-      become: true
-
-    - name: Install apache httpd
+    - name: Install apache check httpd
       yum: name=httpd state=present enablerepo=epel
 
     - name: Copy public folder to server.
@@ -50,30 +38,29 @@
     - name: Copy src folder to server.
       copy: "src=src dest={{ node_apps_location }}"
 
-
     - name: Copy package.json to server.
       copy: "src=package.json dest={{ node_apps_location }}"
-
 
     - name: Copy package-lock.json file to server.
       copy: "src=package-lock.json dest={{ node_apps_location }}" 
 
-
     - name: Copy yarn.lock file to server.
       copy: "src=yarn.lock dest={{ node_apps_location }}"
-
 
     - name: Copy readme.md to server.
       copy: "src=README.md dest={{ node_apps_location }}"
 
-
     - name: Copy LICENSE to server.
-      copy: "src=LICENSE dest={{ node_apps_location }}"   
-      
-    - name:  install node module dependencies
-      command: sudo npm install -g npm@latest
-      become: true 
+      copy: "src=LICENSE dest={{ node_apps_location }}"  
+
+    - name: Install the node module dependencies
+      shell: "npm install -g npm@latest" 
+      args: 
+        chdir: /usr/local/opt/node
+      become: true
 
     - name: serve the app using pm2
-      command: pm2 serve --name "emoji-app" 
+      shell: pm2 serve --name "emoji-app" 
+      args: 
+        chdir: /usr/local/opt/node
 ...
