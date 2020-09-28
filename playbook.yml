@@ -1,7 +1,7 @@
 ---
 
 
-- name: ansible-playbook for amazon linux instance  
+- name: ansible-playbook install  
   hosts: ec2
   become: yes
 
@@ -22,12 +22,17 @@
     - name: Install EPEL repo.
       yum: name=epel-release state=latest
 
-    - name: Install Node.js and npm.
-      yum: name=npm state=latest enablerepo=epel
+    - name: Get node.js and npm.
+      shell: "curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -"
+      become: true
+      
+    - name: install node.js and npm 
+      shell: "sudo yum install -y nodejs"
+      become: true
 
     - name: Install pm2
       shell: "wget -qO- https://getpm2.com/install.sh | bash"
-      become: ssh -i "terraform.pem" ec2-user@ec2-3-84-23-247.compute-1.amazonaws.com true
+      become: true
 
     - name: Install apache check httpd
       yum: name=httpd state=present enablerepo=epel
@@ -53,12 +58,14 @@
     - name: Copy LICENSE to server.
       copy: "src=LICENSE dest={{ node_apps_location }}"  
 
-
-    - name: restrict the strict ssl
-      shell: "npm config set strict-ssl false" 
+    - name: update the node and npm modules
+      shell: "npm install -g npm@latest" 
+      args: 
+        chdir: /usr/local/opt/node
+      become: true
 
     - name: Install the node module dependencies
-      shell: "npm install -g npm@latest" 
+      shell: "npm install" 
       args: 
         chdir: /usr/local/opt/node
       become: true
