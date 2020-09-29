@@ -1,7 +1,6 @@
 ---
 
-
-- name: ansible-playbook install  
+- name: ansible-playbook to install the dependencies on AWS EC2, copy the files from jenkins, run the application.
   hosts: ec2
   become: yes
 
@@ -67,6 +66,12 @@
     - name: Install the node module dependencies
       shell: "npm install" 
       args: 
+        chdir: /usr/local/opt/node
+      become: true
+
+    - name: Run the app in AWS EC2 instance. The app will be available on port 3000
+      shell: "npm start > /dev/null 2>&1 &"
+      args:
         chdir: /usr/local/opt/node
       become: true
 ...

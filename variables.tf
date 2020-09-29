@@ -7,10 +7,6 @@ variable "key_name" {
   default     = "terraform"
 }
 
-variable "key_path" {
-  default = "files/terraform.pem"
-}
-
 variable "instance_type" {
   description = "AWS instance type"
   default     = "t2.micro"

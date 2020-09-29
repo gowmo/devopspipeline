@@ -1,6 +1,10 @@
-// Jenkinsfile
+// Jenkinsfile............................
+
+// define variables
 String credentialsId = 'awsCredentials'
 
+
+// check out from git 
 try {
   stage('checkout') {
     node {
