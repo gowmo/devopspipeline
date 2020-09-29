@@ -69,9 +69,4 @@
       args: 
         chdir: /usr/local/opt/node
       become: true
-
-    - name: serve the app using pm2
-      shell: pm2 serve --name "emoji-app" 
-      args: 
-        chdir: /usr/local/opt/node
 ...
