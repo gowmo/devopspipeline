@@ -69,8 +69,8 @@
         chdir: /usr/local/opt/node
       become: true
 
-    - name: Run the app in AWS EC2 instance. The app will be available on port 3000
-      shell: "nohup npm start &"
+    - name: Run the app using pm2.
+      shell: "pm2 start npm -- start"
       args:
         chdir: /usr/local/opt/node
 ...
